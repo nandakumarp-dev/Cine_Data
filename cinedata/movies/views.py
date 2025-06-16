@@ -60,5 +60,32 @@ class MoviesRetrieveUpdateDestroyView(APIView):
         return Response(data=serializer.data,status=200)
     
 
+    def put(self,request,*args,**kwargs):
+
+        uuid = kwargs.get('uuid')
+
+        movie = get_object_or_404(Movies,uuid=uuid)
+
+        serializer = self.put_serializer_class(instance=movie,data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            movie_obj = serializer.save()
+
+            cast = request.data.get('cast')
+
+            if cast :
+
+                # cast_ids = json.loads(cast, [])
+
+                cast_ids = json.loads(cast)
+
+                movie_obj.cast.set(cast_ids)
+
+            return Response(data={'msg':'movie updated successfully'},status=200)
+        
+        return Response(data=serializer.errors,status=400)
     
+
+
 
