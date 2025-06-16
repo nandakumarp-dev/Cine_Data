@@ -87,5 +87,15 @@ class MoviesRetrieveUpdateDestroyView(APIView):
         return Response(data=serializer.errors,status=400)
     
 
+    def delete(self,request,*args,**kwargs):
 
+        uuid = kwargs.get('uuid')
+
+        movie = get_object_or_404(Movies,uuid=uuid)
+
+        movie.active_status = False
+
+        movie.save()
+
+        return Response(data={'msg':'movie deleted successfully'},status=200)
 
