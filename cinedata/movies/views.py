@@ -5,10 +5,21 @@ from .models import Movies
 from .serializers import MoviesListRetrieveSerializer, MoviesCreateUpdateSerializer
 import json
 from django.shortcuts import get_object_or_404
+from rest_framework import authentication
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt import authentication
+from authentication.permissions import IsAdmin, IsUser
+
 
 # Create your views here.
 
-class MoviesListCreatView(APIView):
+class MoviesListCreateView(APIView):
+
+    http_method_names = ['get','post']
+
+    authentication_classes = [authentication.JWTAuthentication]
+
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     #this serializer is for list and create view
 
@@ -17,6 +28,19 @@ class MoviesListCreatView(APIView):
     #this serializer is for create and update view
 
     post_serializer_class = MoviesCreateUpdateSerializer
+
+    def get_permissions(self):
+
+        if self.request.method=='GET':
+
+            return [AllowAny()]
+        
+        elif self.request.method == 'POST':
+
+            return [IsAdmin()]
+    
+        return super().get_permissions(self)
+    
 
     def get(self,request,*args,**kwargs):
 
