@@ -8,9 +8,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         model = Profile
 
-        fields = '__all__'
+        # fields = '__all__'
 
-        read_only_fields = ['role']
+        exclude = ['password']
+
+        read_only_fields = ['role','username','password']
 
 
 
