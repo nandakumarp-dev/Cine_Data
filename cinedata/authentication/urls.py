@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
 
     path('login/',views.LoginView.as_view()),
-    path('user-registration/',views.UserRegistration.as_view()),
+    path('user-registration/',views.UserRegistrationView.as_view()),
+    path('otp-verify/',views.OTPVerifyView.as_view()),
     
 ]

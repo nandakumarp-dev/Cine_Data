@@ -1,5 +1,7 @@
 from twilio.rest import Client
 from decouple import config
+import random
+import string
 
 def sending_sms(phone_num,otp):
 
@@ -15,3 +17,9 @@ def sending_sms(phone_num,otp):
         body=f'Your OTP for verification is {otp}'
         )
 
+
+def get_otp():
+
+    otp = ''.join(random.choices(string.digits,k=4))
+
+    return otp

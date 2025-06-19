@@ -8,7 +8,8 @@ from rest_framework.permissions import AllowAny
 from .serializers import ProfileSerializer
 from .models import OTP
 from django.db import transaction
-from . utility import sending_sms
+from . utility import sending_sms, get_otp
+from django.utils import timezone
 
 # Create your views here.
 
@@ -33,7 +34,7 @@ class LoginView(APIView):
         return Response(data={'msg':'invalid credentials'},status=401)
     
 
-class UserRegistration(APIView):
+class UserRegistrationView(APIView):
 
     http_method_names = ['post']
 
@@ -65,7 +66,7 @@ class UserRegistration(APIView):
 
                 profile.save()
 
-                otp = '1234'
+                otp = get_otp()
 
                 otp_obj = OTP.objects.create(user = profile,otp=otp)
 
@@ -77,11 +78,37 @@ class UserRegistration(APIView):
         
         return Response(data=serializer.errors,status=400)
     
-    
 
+class OTPVerifyView(APIView):
 
+    http_method_names = ['post']
 
+    authentication_classes = [JWTAuthentication]
 
+    permission_classes = [AllowAny]
 
+    def post(self,request,*args,**kwargs):
 
-    
+        mobile_num = request.data.get('mobile_num')
+
+        otp = request.data.get('otp')
+
+        otp_obj = OTP.objects.get(user__mobile_num=mobile_num)
+
+        time_now = timezone.now()
+
+        otp_time = otp_obj.updated_at
+
+        if time_now-otp_time <= timezone.timedelta(minutes=10):
+
+            if otp == otp_obj.otp:
+
+                otp_obj.user.is_active = True
+
+                otp_obj.user.save()
+
+                return Response(data={'msg':'user verified successfully'},status=200)
+            
+            return Response(data={'msg':'Invalid otp'},status=400)
+        
+        return Response(data={'msg':'otp expired'},status=400)
