@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movies
+from .models import Movies, Rating
 
 
 class MoviesListRetrieveSerializer(serializers.ModelSerializer):
@@ -17,3 +17,11 @@ class MoviesCreateUpdateSerializer(serializers.ModelSerializer):
 
         model = Movies
         exclude = ['cast','active_status','uuid']
+
+
+class RatingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Rating
+        fields = '__all__'

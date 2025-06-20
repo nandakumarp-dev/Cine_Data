@@ -10,6 +10,7 @@ from .models import OTP
 from django.db import transaction
 from . utility import sending_sms, get_otp
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -112,3 +113,24 @@ class OTPVerifyView(APIView):
             return Response(data={'msg':'Invalid otp'},status=400)
         
         return Response(data={'msg':'otp expired'},status=400)
+    
+
+class OTPRegenerateView(APIView):
+
+    def post(self,request,*args,**kwargs):
+
+        mobile_num = request.data.get('mobile_num')
+
+        otp_obj = get_object_or_404(OTP,user__mobile_num=mobile_num)
+
+        otp = get_otp()
+
+        otp_obj.otp = otp
+
+        otp_obj.save()
+
+        phone_num = f'+91{mobile_num}'
+
+        sending_sms(phone_num,otp)
+
+        return Response(data={'msg':'verify account using otp'},status=200)
