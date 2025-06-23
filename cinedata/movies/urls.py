@@ -9,6 +9,6 @@ urlpatterns = [
 
     path('rating/<str:uuid>/',views.AddRatingView.as_view()),
 
-    # path('top-20-movies/',views.Top20MoviesListView.as_view()),
+    path('top-20-movies/',views.Top20MoviesListView.as_view()),
     
 ]

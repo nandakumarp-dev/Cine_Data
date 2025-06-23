@@ -10,6 +10,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt import authentication
 from authentication.permissions import IsAdmin, IsUser
 from django.db.models import Avg
+from .serializers import MoviesListRetrieveSerializer
 
 
 # Create your views here.
@@ -146,16 +147,21 @@ class AddRatingView(APIView):
         return Response(data={'msg':'rating added successfully'},status=200)
     
 
-# class Top20MoviesListView(APIView):
+class Top20MoviesListView(APIView):
 
-#     http_method_names = ['post']
+    http_method_names = ['post']
 
-#     authentication_classes = [authentication.JWTAuthentication]
+    authentication_classes = [authentication.JWTAuthentication]
 
-#     permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
 
-#     def get(self,request,*args,**kwargs):
+    serializer_class = MoviesListRetrieveSerializer
 
-#         top_20_movies = Movies.objects.annotate(avg_rating=Avg('hello'))
+    def get(self,request,*args,**kwargs):
 
-#         return Response()
+        top_20_movies = Movies.objects.annotate(avg_rating=Avg('rating__rating')).filter(avg_rating__isnull = False) #.exclude(avg_rating__isnull = True)
+
+        serializer = self.serializer_class(top_20_movies,many=True)
+
+        return Response(data=serializer.data,status=200)
+    
