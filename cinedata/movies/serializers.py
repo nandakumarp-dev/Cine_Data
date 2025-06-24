@@ -27,6 +27,10 @@ class MoviesListRetrieveSerializer(serializers.ModelSerializer):
         avg_rating = obj.rating_set.aggregate(avg_rating = Avg('rating'))['avg_rating']
 
         return avg_rating 
+    
+    def get_out_of_users(self,obj):
+
+        return obj.rating_set.count
 
 
 class MoviesCreateUpdateSerializer(serializers.ModelSerializer):

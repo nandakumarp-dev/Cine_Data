@@ -164,4 +164,3 @@ class Top20MoviesListView(APIView):
         serializer = self.serializer_class(top_20_movies,many=True)
 
         return Response(data=serializer.data,status=200)
-    
