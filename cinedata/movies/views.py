@@ -64,7 +64,7 @@ class MoviesListCreateView(APIView):
 
             movie.cast.set(cast_ids)
 
-            return Response(data={'msg':'movie created successfully'},status = 200)
+            return Response(data={'msg':'movie created successfully'},status = 201)
 
         return Response(data=serializer.errors,status=400)
     
@@ -74,6 +74,18 @@ class MoviesRetrieveUpdateDestroyView(APIView):
     get_serializer_class = MoviesListRetrieveSerializer
 
     put_serializer_class = MoviesCreateUpdateSerializer
+
+    def get_permissions(self):
+
+        if self.request.method=='GET':
+
+            return [AllowAny()]
+        
+        elif self.request.method in ['POST','DELETE']:
+
+            return [IsAdmin()]
+    
+        return super().get_permissions(self)
 
     def get(self,request,*args,**kwargs):
 
