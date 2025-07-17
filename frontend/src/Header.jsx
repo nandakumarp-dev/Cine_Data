@@ -1,7 +1,18 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Header() {
+
+  let navigate = useNavigate()
+
+  function logOutFunc(){
+
+    localStorage.clear()
+
+    navigate('/')
+
+  }
+
   return (
     <header>
     <nav class="navbar navbar-expand-lg"
@@ -31,9 +42,21 @@ function Header() {
             <li class="nav-item">
             <a class="nav-link text-white" href="#">Artists</a>
             </li>
+
+          {localStorage.getItem('accessToken')?(
+
+            <li class="nav-item">
+            <button onClick={logOutFunc} class="nav-link text-white">Logout</button>
+            </li>
+
+            ):(
+
             <li class="nav-item">
             <Link to={"/login/"} class="nav-link text-white">Login</Link>
             </li>
+
+          )}
+
         </ul>
         </div>
       </div>
