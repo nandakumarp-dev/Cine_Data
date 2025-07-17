@@ -75,13 +75,15 @@ class MoviesRetrieveUpdateDestroyView(APIView):
 
     put_serializer_class = MoviesCreateUpdateSerializer
 
+    authentication_classes = [authentication.JWTAuthentication]
+
     def get_permissions(self):
 
         if self.request.method=='GET':
 
             return [AllowAny()]
         
-        elif self.request.method in ['POST','DELETE']:
+        elif self.request.method in ['PUT','DELETE']:
 
             return [IsAdmin()]
     

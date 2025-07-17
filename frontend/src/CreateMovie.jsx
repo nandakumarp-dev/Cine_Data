@@ -6,13 +6,13 @@ function CreateMovie() {
 
     let navigate = useNavigate()
 
+    let token = `Bearer ${localStorage.getItem('accessToken')}`
+
     async function CreateMovieAPI(event){
 
         event.preventDefault()
 
         let url = 'http://127.0.0.1:8000/movies/'
-
-        let token = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNjQyNTE5LCJpYXQiOjE3NTI1NTYxMTksImp0aSI6IjU5YmMyMjY1YmI5MDRmMmFhYjMyNTJiY2NiOGI3YWZjIiwidXNlcl9pZCI6MX0.F4bXOCi0B_IpbpEYt_7qJRYpmwysc09lxlS1JjfR0OY`
 
         let headers = {'Authorization':token}
 
@@ -30,7 +30,7 @@ function CreateMovie() {
 
             console.log(response.data.msg)
 
-            navigate('')
+            navigate('/')
 
         }
         else{

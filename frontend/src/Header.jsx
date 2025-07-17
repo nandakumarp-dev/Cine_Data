@@ -32,7 +32,7 @@ function Header() {
             <a class="nav-link text-white" href="#">Artists</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link text-white" href="#">Login</a>
+            <Link to={"/login/"} class="nav-link text-white">Login</Link>
             </li>
         </ul>
         </div>

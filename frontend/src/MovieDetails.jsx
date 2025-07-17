@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams,useNavigate } from 'react-router-dom'
 
 
-
-
 function MovieDetails() {
 
     let {uuid} = useParams()
@@ -19,24 +17,19 @@ function MovieDetails() {
 
     let url = `http://127.0.0.1:8000/movies/${uuid}/`
 
-    async function deleteMovie(){
+    let token = `Bearer ${localStorage.getItem('accessToken')}`
 
-        let token = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNjQyNTE5LCJpYXQiOjE3NTI1NTYxMTksImp0aSI6IjU5YmMyMjY1YmI5MDRmMmFhYjMyNTJiY2NiOGI3YWZjIiwidXNlcl9pZCI6MX0.F4bXOCi0B_IpbpEYt_7qJRYpmwysc09lxlS1JjfR0OY`
+    async function deleteMovie(){
 
         let headers = {'Authorization':token}
 
         let response = await axios.delete(url,{headers})
 
-        
-
         response.status === 200 ? navigate('/') : console.log('no movie details')
-
 
     }
 
     async function fetchMovieDetails(){
-
-        
 
         let response = await axios.get(url)
 
