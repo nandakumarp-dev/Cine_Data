@@ -6,6 +6,7 @@ import Home from './Home'
 import CreateMovie from './CreateMovie'
 import MovieDetails from './MovieDetails'
 import Login from './Login'
+import MovieEdit from './MovieEdit'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="create-movie/" element={<CreateMovie/>}></Route>
             <Route path="movie-details/:uuid/" element={<MovieDetails/>}></Route>
             <Route path="login/" element={<Login/>}></Route>
+            <Route path="movie-edit/:uuid/" element={<MovieEdit/>}></Route>
         </Routes>
     <Footer/>
     </BrowserRouter>

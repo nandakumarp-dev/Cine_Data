@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams,useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 function MovieDetails() {
@@ -35,6 +36,7 @@ function MovieDetails() {
 
         response.status ===200 ? ChangeMovie(response.data) : console.log('no movie details')
     }
+    
   return (
     <div class="container mt-5">
     <div class="card shadow">
@@ -60,7 +62,7 @@ function MovieDetails() {
 
                     <hr/>
                     <div class="d-flex">
-                        <button class="btn btn-primary m-1">Edit</button>
+                        <Link to={`/movie-edit/${movie.uuid}/`} class="btn btn-primary m-1">Edit</Link>
                         <button class="btn btn-danger m-1" onClick={deleteMovie}>Delete</button>
                     </div>
                 </div>
